@@ -135,11 +135,11 @@ export function Timeline() {
         {selectedSub && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-navy/90 backdrop-blur-md p-4"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-2xl p-4"
           >
             <motion.div
               initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
-              className="glass-card w-full max-w-lg border-white/20 overflow-hidden shadow-2xl"
+              className="bg-navy-dark/95 backdrop-blur-xl w-full max-w-lg border border-white/20 rounded-[2.5rem] overflow-hidden shadow-[0_0_100px_rgba(37,99,235,0.2)]"
             >
               <div className="p-6 border-b border-white/10 flex items-center justify-between bg-white/5">
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
