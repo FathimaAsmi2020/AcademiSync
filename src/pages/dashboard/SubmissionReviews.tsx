@@ -41,6 +41,7 @@ export function SubmissionReviews() {
     saving: boolean; 
     saved: boolean 
   }>>({});
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,7 +103,11 @@ export function SubmissionReviews() {
     if (error) {
       alert(`Failed to save review: ${error.message}`);
     } else {
-      // Refresh history
+      // Show success notification
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 5000);
+
+      // Refresh data
       const { data: newHistory } = await supabase.from('submissions').select('*').eq('project_id', projectId).order('created_at', { ascending: false });
       if (newHistory) setHistory(newHistory);
     }
@@ -134,6 +139,18 @@ export function SubmissionReviews() {
         </div>
       </div>
 
+      {showSuccess && (
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          exit={{ opacity: 0, y: -20 }}
+          className="p-4 bg-emerald-500/20 border border-emerald-500/50 rounded-xl flex items-center gap-3 text-emerald-400 font-bold shadow-lg shadow-emerald-500/10"
+        >
+          <CheckCircle size={20} />
+          <span>Review Published Successfully! The item has been moved to history.</span>
+        </motion.div>
+      )}
+
       {/* Track Indicator */}
       <div className="p-4 rounded-xl border bg-cobalt/10 border-cobalt/20 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -157,15 +174,18 @@ export function SubmissionReviews() {
             <h2 className="text-lg font-bold text-white uppercase tracking-wider">Active Submissions</h2>
           </div>
 
-          {uploads.length === 0 ? (
+          {uploads.filter(file => !reviewStates[file.id]?.saved).length === 0 ? (
             <div className="glass-card p-12 text-center text-slate-400 border-white/5">
-              <FileText size={48} className="mx-auto mb-4 opacity-30" />
-              <h3 className="text-xl font-bold text-white mb-2">No Files Found</h3>
-              <p>Wait for the team to upload their project files.</p>
+              <CheckCircle size={48} className="mx-auto mb-4 text-emerald-500 opacity-50" />
+              <h3 className="text-xl font-bold text-white mb-2">All Reviews Completed!</h3>
+              <p>You have reviewed all active submissions for this project.</p>
+              <button onClick={() => navigate('/dashboard')} className="mt-6 px-6 py-2 bg-cobalt/20 hover:bg-cobalt text-white rounded-lg transition-all text-sm font-bold">
+                Return to Dashboard
+              </button>
             </div>
           ) : (
             <div className="space-y-6">
-              {uploads.map((file, idx) => {
+              {uploads.filter(file => !reviewStates[file.id]?.saved).map((file, idx) => {
                 const state = reviewStates[file.id] || { reviewLevel: 0, changeType: '', comment: '', saving: false, saved: false };
                 const ctInfo = changeTypeInfo(state.changeType);
 

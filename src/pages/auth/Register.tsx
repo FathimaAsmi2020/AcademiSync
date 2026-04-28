@@ -99,6 +99,7 @@ export function Register() {
           role: role,
           dept: department,
           name: role === 'student' ? `Team ${teamNumber}` : staffName,
+          email: email,
         };
 
         if (role === 'student') {

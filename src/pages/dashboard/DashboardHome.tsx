@@ -20,6 +20,7 @@ export function DashboardHome() {
   const { profile, isGuide } = useAuth();
   const navigate = useNavigate();
   const [project, setProject] = useState<Project | null>(null);
+  const [members, setMembers] = useState<Profile[]>([]);
   const [guide, setGuide] = useState<Profile | null>(null);
   const [showGuideAlert, setShowGuideAlert] = useState(false);
   const [loadingProject, setLoadingProject] = useState(true);
@@ -50,11 +51,20 @@ export function DashboardHome() {
         return;
       }
 
+      // Fetch Project and Members
       const { data, error } = await supabase
         .from('projects').select('*').eq('id', profile.team_id).single();
 
       if (!error && data) {
         setProject(data);
+
+        // FETCH TEAM MEMBERS
+        const { data: memberData } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('team_id', profile.team_id);
+        if (memberData) setMembers(memberData);
+
         if (data.guide_id) {
           const { data: guideData } = await supabase.from('profiles').select('*').eq('id', data.guide_id).single();
           if (guideData) setGuide(guideData);
@@ -242,7 +252,7 @@ export function DashboardHome() {
       ) : loadingProject ? (
         <div className="flex justify-center p-12"><Loader2 className="animate-spin text-cobalt" /></div>
       ) : project ? (
-        <AdaptiveDashboard project={project} />
+        <AdaptiveDashboard project={project} members={members} />
       ) : (
         <div className="glass-card p-12 text-center text-slate-400 border-white/5">
           <Code size={48} className="mx-auto mb-4 opacity-50" />

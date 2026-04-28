@@ -21,10 +21,10 @@ export function Navbar() {
           <span className="text-2xl font-bold text-slate tracking-tight">Academi<span className="text-cobalt-light">Sync</span></span>
         </Link>
         
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-          <a href="#features" className="text-slate/80 hover:text-white transition-colors">Features</a>
-          <a href="#departments" className="text-slate/80 hover:text-white transition-colors">Departments</a>
-          <a href="#gate" className="text-slate/80 hover:text-white transition-colors">Academic Gate</a>
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+          <Link to="/gallery" className="hover:text-white transition-colors">Project Gallery</Link>
+          <a href="#features" className="hover:text-white transition-colors">Features</a>
+          <a href="#gate" className="hover:text-white transition-colors text-nowrap">Academic Gate</a>
         </div>
 
         <div className="flex items-center gap-4">

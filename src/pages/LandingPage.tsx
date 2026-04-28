@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Code, Cpu, Hammer, ShieldCheck, Zap, Globe, Lock, BarChart3, Users } from 'lucide-react';
 import { Navbar } from '../components/ui/Navbar';
+import { ProjectGallery } from '../components/landing/ProjectGallery';
 import { Link } from 'react-router-dom';
 import { useRef } from 'react';
 
@@ -104,9 +105,9 @@ export function LandingPage() {
                 Start Project
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <a href="#features" className="px-10 py-5 rounded-2xl glass font-bold text-lg hover:bg-white/10 transition-all border-white/5 active:scale-95">
-                Features
-              </a>
+              <Link to="/gallery" className="px-10 py-5 rounded-2xl glass font-bold text-lg hover:bg-white/10 transition-all border-white/5 active:scale-95">
+                Project Gallery
+              </Link>
             </motion.div>
           </div>
           

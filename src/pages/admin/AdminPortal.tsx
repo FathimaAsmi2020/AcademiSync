@@ -125,15 +125,15 @@ export function AdminPortal() {
     
     setUnassignedTeams(prev => prev.filter(p => p.id !== studentProfileId));
     
-    // Simulate Email Dispatch Notification
-    const mockEmail = student.roll_number ? `${student.roll_number.toLowerCase()}@university.edu` : 'student@university.edu';
-    setEmailAlert({ show: true, studentName: student.name, email: mockEmail });
+    // Dispatch Notification to Registered Email
+    const dispatchEmail = student.email || 'student@university.edu';
+    setEmailAlert({ show: true, studentName: student.name, email: dispatchEmail });
     setTimeout(() => setEmailAlert(null), 5000);
     
     // Add Audit Log
     await supabase.from('audit_logs').insert({
       action: 'Project Created & Guide Assigned',
-      details: { project_id: newProject.id, guide_id: guideId, student_profile_id: studentProfileId, email_dispatched: mockEmail }
+      details: { project_id: newProject.id, guide_id: guideId, student_profile_id: studentProfileId, email_dispatched: dispatchEmail }
     });
     
     setAssigningId(null);

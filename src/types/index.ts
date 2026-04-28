@@ -12,6 +12,7 @@ export interface Profile {
   staff_id?: string;
   team_number?: string;
   team_members?: { name: string; roll_number: string }[];
+  email?: string;
 }
 
 export interface Project {
@@ -22,6 +23,9 @@ export interface Project {
   github_url?: string;
   simulation_links?: string[];
   created_at: string;
+  problem_statement?: string;
+  challenges_overcome?: string;
+  overview?: string;
 }
 
 export interface Submission {

@@ -1,9 +1,9 @@
 import { Timeline } from '../project/Timeline';
-import type { Project } from '../../types';
-import { UploadCloud, MessageSquare, ShieldCheck, Clock } from 'lucide-react';
+import type { Project, Profile } from '../../types';
+import { UploadCloud, MessageSquare, ShieldCheck, Clock, Users, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export function AdaptiveDashboard({ project }: { project: Project }) {
+export function AdaptiveDashboard({ project, members }: { project: Project; members: Profile[] }) {
   if (!project) {
     return <div className="glass-card p-8 text-center text-slate/60 animate-pulse">Loading Project Data...</div>;
   }
@@ -37,6 +37,26 @@ export function AdaptiveDashboard({ project }: { project: Project }) {
             <MessageSquare size={18} /> Review Feedback
           </Link>
         </div>
+      </div>
+
+      {/* Team Members List */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {members.map((member) => (
+          <div key={member.id} className="glass-card p-4 border-white/5 flex items-center gap-4 hover:bg-white/5 transition-all group">
+            <div className="w-12 h-12 rounded-xl bg-cobalt/10 flex items-center justify-center text-cobalt-light group-hover:bg-cobalt group-hover:text-white transition-all shadow-inner">
+              <User size={24} />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-white leading-none mb-1">{member.name}</p>
+              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{member.roll_number || 'Member'}</p>
+            </div>
+          </div>
+        ))}
+        {members.length === 0 && (
+          <div className="lg:col-span-4 p-4 text-center text-slate-500 italic text-xs">
+            Fetching team member data...
+          </div>
+        )}
       </div>
 
       {/* Primary Content: Project Progression Timeline */}

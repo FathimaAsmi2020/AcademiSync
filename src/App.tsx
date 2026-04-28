@@ -11,6 +11,7 @@ import { AdminPortal } from './pages/admin/AdminPortal';
 import { SubmissionReviews } from './pages/dashboard/SubmissionReviews';
 import { StaffReviews } from './pages/dashboard/StaffReviews';
 import { StaffMeetings } from './pages/dashboard/StaffMeetings';
+import { GalleryPage } from './pages/GalleryPage';
 
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
@@ -18,6 +19,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/gallery" element={<GalleryPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       

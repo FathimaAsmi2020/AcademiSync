@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import type { Project, Profile } from '../../types';
-import { Users, FileText, ChevronRight, Loader2 } from 'lucide-react';
+import { Users, FileText, ChevronRight, Loader2, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,8 @@ interface GuideDashboardProps {
 
 export function GuideDashboard({ profile }: GuideDashboardProps) {
   const [assignedProjects, setAssignedProjects] = useState<Project[]>([]);
-  const [uploadCounts, setUploadCounts] = useState<Record<string, number>>({});
+  const [totalAssigned, setTotalAssigned] = useState(0);
+  const [pendingCounts, setPendingCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ export function GuideDashboard({ profile }: GuideDashboardProps) {
         .order('created_at', { ascending: true });
 
       if (!error && data) {
-        // Deduplicate: first by project ID, then by title (removes legacy duplicates)
+        // Deduplicate
         const seen = new Set<string>();
         const seenTitles = new Set<string>();
         const unique = data.filter(p => {
@@ -34,19 +35,30 @@ export function GuideDashboard({ profile }: GuideDashboardProps) {
           seenTitles.add(p.title);
           return true;
         });
-        setAssignedProjects(unique);
 
-        // Fetch upload counts per project
         if (unique.length > 0) {
+          setTotalAssigned(unique.length);
           const counts: Record<string, number> = {};
+          const activeProjects: Project[] = [];
+
           await Promise.all(unique.map(async p => {
-            const { count } = await supabase
-              .from('file_uploads')
-              .select('id', { count: 'exact', head: true })
-              .eq('project_id', p.id);
-            counts[p.id] = count ?? 0;
+            const { data: uploads } = await supabase.from('file_uploads').select('id').eq('project_id', p.id);
+            const { data: reviews } = await supabase.from('submissions').select('file_upload_id').eq('project_id', p.id);
+            
+            const reviewedIds = new Set(reviews?.map(r => r.file_upload_id) || []);
+            const pendingCount = uploads?.filter(u => !reviewedIds.has(u.id)).length || 0;
+            
+            if (pendingCount > 0) {
+              counts[p.id] = pendingCount;
+              activeProjects.push(p);
+            }
           }));
-          setUploadCounts(counts);
+          
+          setPendingCounts(counts);
+          setAssignedProjects(activeProjects);
+        } else {
+          setTotalAssigned(0);
+          setAssignedProjects([]);
         }
       }
       setLoading(false);
@@ -66,23 +78,23 @@ export function GuideDashboard({ profile }: GuideDashboardProps) {
           <Users size={24} />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-white">Assigned Teams</h2>
+          <h2 className="text-2xl font-bold text-white">Project Review Center</h2>
           <p className="text-slate-400 text-sm">
-            {assignedProjects.length} team{assignedProjects.length !== 1 ? 's' : ''} assigned — Click a team to review their submissions.
+            {totalAssigned} team{totalAssigned !== 1 ? 's' : ''} total — {assignedProjects.length} pending review{assignedProjects.length !== 1 ? 's' : ''}
           </p>
         </div>
       </div>
 
       {assignedProjects.length === 0 ? (
         <div className="glass-card p-12 text-center text-slate-400 border-white/5">
-          <Users size={48} className="mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-bold text-white mb-2">No Teams Assigned</h3>
-          <p>You have not been assigned as a guide to any projects yet.</p>
+          <CheckCircle size={48} className="mx-auto mb-4 text-emerald-500 opacity-50" />
+          <h3 className="text-xl font-bold text-white mb-2">No Pending Reviews</h3>
+          <p>All clear! You have reviewed all submissions for your assigned teams. New uploads will appear here automatically.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {assignedProjects.map((project, idx) => {
-            const count = uploadCounts[project.id] ?? 0;
+            const count = pendingCounts[project.id] ?? 0;
             return (
               <motion.div
                 key={project.id}
@@ -100,10 +112,10 @@ export function GuideDashboard({ profile }: GuideDashboardProps) {
                     Allocated: {new Date(project.created_at).toLocaleDateString()}
                   </p>
 
-                  {/* Upload count badge */}
-                  <div className={`mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold border ${count > 0 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-white/5 text-slate-500 border-white/10'}`}>
+                  {/* Pending count badge */}
+                  <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold border bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
                     <FileText size={12} />
-                    {count > 0 ? `${count} document${count !== 1 ? 's' : ''} uploaded` : 'No uploads yet'}
+                    {count} pending submission{count !== 1 ? 's' : ''}
                   </div>
                 </div>
 
