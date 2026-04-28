@@ -59,6 +59,52 @@ export function AdaptiveDashboard({ project, members }: { project: Project; memb
         )}
       </div>
 
+      {/* Project Metadata Display */}
+      {(project.overview || project.problem_statement || project.challenges_overcome) && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="lg:col-span-2 glass-card p-6 border-white/5 space-y-6">
+            {project.overview && (
+              <div>
+                <h4 className="text-[10px] font-black text-cobalt-light uppercase tracking-widest mb-2">Project Overview</h4>
+                <p className="text-sm text-slate-300 leading-relaxed">{project.overview}</p>
+              </div>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/5">
+              {project.problem_statement && (
+                <div>
+                  <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Problem Statement</h4>
+                  <p className="text-xs text-slate-400 italic">{project.problem_statement}</p>
+                </div>
+              )}
+              {project.challenges_overcome && (
+                <div>
+                  <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Challenges Solved</h4>
+                  <p className="text-xs text-slate-400 italic">{project.challenges_overcome}</p>
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <div className="glass-card p-6 border-white/5 bg-gradient-to-br from-cobalt/5 to-purple-500/5">
+            <h4 className="text-[10px] font-black text-white uppercase tracking-widest mb-4">Quick Stats</h4>
+            <div className="space-y-4">
+              <div className="flex justify-between text-xs">
+                <span className="text-slate-500">Total Members</span>
+                <span className="text-white font-bold">{members.length}</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-slate-500">Domain</span>
+                <span className="text-white font-bold capitalize">{project.dept_category}</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-slate-500">Last Update</span>
+                <span className="text-white font-bold">{new Date().toLocaleDateString()}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Primary Content: Project Progression Timeline */}
       <div className="pt-4">
         <div className="flex items-center gap-3 mb-6 px-1">
