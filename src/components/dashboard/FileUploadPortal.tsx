@@ -39,6 +39,11 @@ export function FileUploadPortal({ projectId }: FileUploadPortalProps) {
     setMessage(null);
 
     try {
+      // 0. Validate Project ID
+      if (!projectId || projectId === 'undefined' || projectId.length < 10) {
+        throw new Error("Invalid Project ID. Please refresh the dashboard or contact support.");
+      }
+
       // 1. Get current user
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Authentication failed. Please sign in again.");
