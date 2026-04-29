@@ -1,6 +1,6 @@
 import { Timeline } from '../project/Timeline';
 import type { Project, Profile } from '../../types';
-import { UploadCloud, MessageSquare, ShieldCheck, Clock, Users, User } from 'lucide-react';
+import { UploadCloud, MessageSquare, ShieldCheck, Clock, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function AdaptiveDashboard({ project, members }: { project: Project; members: Profile[] }) {

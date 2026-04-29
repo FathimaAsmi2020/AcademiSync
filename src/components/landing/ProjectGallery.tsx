@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, History, Calendar, ChevronRight, ChevronDown, CheckCircle2, Clock } from 'lucide-react';
+import { Users, History, Calendar, ChevronRight, ChevronDown } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -216,7 +216,7 @@ export function ProjectGallery() {
 
                       {project.timeline && project.timeline.length > 0 ? (
                         <div className="relative pl-6 space-y-8 before:absolute before:left-[3px] before:top-2 before:bottom-2 before:w-px before:bg-gradient-to-b before:from-cobalt/50 before:to-transparent">
-                          {project.timeline.map((item: any, i: number) => (
+                          {project.timeline.map((item: any) => (
                             <div key={item.id} className="relative">
                               <div className={`absolute -left-[27px] top-1.5 w-2 h-2 rounded-full ring-4 ring-navy ${
                                 item.type === 'review' ? 'bg-cobalt' : 'bg-emerald-400'
