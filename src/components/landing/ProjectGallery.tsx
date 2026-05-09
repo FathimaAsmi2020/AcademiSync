@@ -38,10 +38,20 @@ export function ProjectGallery() {
         const enrichedProjects = await Promise.all(
           projectsData.map(async (project) => {
             // Fetch team members
-            const { data: profiles } = await supabase
+            const { data: teamProfiles } = await supabase
               .from('profiles')
-              .select('name, roll_number')
+              .select('name, roll_number, team_members')
               .eq('team_id', project.id);
+              
+            let actualMembers: any[] = [];
+            if (teamProfiles && teamProfiles.length > 0) {
+              const tp = teamProfiles[0];
+              if (tp.team_members && Array.isArray(tp.team_members)) {
+                actualMembers = tp.team_members;
+              } else {
+                actualMembers = [tp];
+              }
+            }
 
             // Fetch submissions (reviews)
             const { data: submissions } = await supabase
@@ -70,7 +80,7 @@ export function ProjectGallery() {
 
             return { 
               ...project, 
-              profiles: profiles || [], 
+              profiles: actualMembers, 
               timeline 
             };
           })

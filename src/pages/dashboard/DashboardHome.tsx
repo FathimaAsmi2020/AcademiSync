@@ -59,11 +59,24 @@ export function DashboardHome() {
         setProject(data);
 
         // FETCH TEAM MEMBERS
-        const { data: memberData } = await supabase
+        const { data: teamProfiles } = await supabase
           .from('profiles')
           .select('*')
           .eq('team_id', profile.team_id);
-        if (memberData) setMembers(memberData);
+          
+        if (teamProfiles && teamProfiles.length > 0) {
+          const tp = teamProfiles[0];
+          if (tp.team_members && Array.isArray(tp.team_members)) {
+            setMembers(tp.team_members.map((m: any, i: number) => ({
+              id: `member-${i}`,
+              name: m.name,
+              roll_number: m.rollNumber || m.roll_number,
+              role: 'student'
+            })));
+          } else {
+            setMembers([tp]);
+          }
+        }
 
         if (data.guide_id) {
           const { data: guideData } = await supabase.from('profiles').select('*').eq('id', data.guide_id).single();
