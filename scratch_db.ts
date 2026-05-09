@@ -5,33 +5,40 @@ const SUPABASE_KEY = process.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_2TbUB
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-async function checkDb() {
-  console.log("Fetching student profiles with team_id IS NULL...");
-  const { data: studentProfiles, error: err1 } = await supabase
+async function checkGuides() {
+  console.log("Fetching all guides from profiles...");
+  const { data: guides, error } = await supabase
     .from('profiles')
     .select('*')
-    .eq('role', 'student')
-    .is('team_id', null);
+    .eq('role', 'guide');
     
-  if (err1) {
-    console.error("Error fetching profiles:", err1);
+  if (error) {
+    console.error("Error fetching guides:", error);
   } else {
-    console.log(`Found ${studentProfiles?.length || 0} unassigned student profiles:`);
-    studentProfiles?.forEach(s => {
-      console.log(`- ID: ${s.id}, Name: ${s.name}, Team Number: ${s.team_number}`);
+    console.log(`Found ${guides?.length || 0} guides in profiles:`);
+    guides?.forEach(g => {
+      console.log(`- ID: ${g.id}`);
+      console.log(`  Name: ${g.name}`);
+      console.log(`  Dept: "${g.dept}"`);
+      console.log(`  Role: "${g.role}"`);
     });
   }
 
-  console.log("\nFetching all projects...");
-  const { data: projects, error: err2 } = await supabase.from('projects').select('title');
+  console.log("\nFetching approved_staff...");
+  const { data: approved, error: err2 } = await supabase
+    .from('approved_staff')
+    .select('*');
+    
   if (err2) {
-    console.error("Error fetching projects:", err2);
+    console.error("Error fetching approved staff:", err2);
   } else {
-    console.log(`Found ${projects?.length || 0} projects:`);
-    projects?.forEach(p => {
-      console.log(`- Title: ${p.title}`);
+    console.log(`Found ${approved?.length || 0} approved staff:`);
+    approved?.forEach(a => {
+      console.log(`- Name: ${a.name}, Dept: "${a.dept}", ID: ${a.staff_id}`);
     });
   }
 }
 
-checkDb();
+checkGuides();
+
+

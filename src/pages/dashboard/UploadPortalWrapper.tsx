@@ -1,17 +1,11 @@
-import { useState, useEffect } from 'react';
+
 import { FileUploadPortal } from '../../components/dashboard/FileUploadPortal';
 import { useAuth } from '../../context/AuthContext';
 import { Loader2 } from 'lucide-react';
 
 export function UploadPortalWrapper() {
   const { profile, loading } = useAuth();
-  const [projectId, setProjectId] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (profile?.team_id) {
-      setProjectId(profile.team_id);
-    }
-  }, [profile]);
+  const projectId = profile?.team_id || null;
 
   if (loading) {
     return <div className="flex justify-center p-12"><Loader2 className="animate-spin text-cobalt" /></div>;

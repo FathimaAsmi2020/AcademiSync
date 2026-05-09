@@ -80,7 +80,7 @@ export function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-7xl md:text-8xl font-extrabold tracking-tighter leading-[0.9]"
+              className="text-5xl sm:text-7xl md:text-8xl font-extrabold tracking-tighter leading-[0.9]"
             >
               Master your <br />
               <span className="text-gradient">Potential.</span>
@@ -101,11 +101,11 @@ export function LandingPage() {
               transition={{ duration: 0.7, delay: 0.3 }}
               className="flex flex-wrap items-center gap-6 pt-4"
             >
-              <Link to="/register" className="group px-10 py-5 rounded-2xl bg-cobalt text-white font-bold text-lg hover:bg-cobalt-light transition-all shadow-[0_20px_40px_rgba(37,99,235,0.3)] flex items-center gap-2 active:scale-95">
+              <Link to="/register" className="group px-6 sm:px-10 py-4 sm:py-5 rounded-2xl bg-cobalt text-white font-bold text-base sm:text-lg hover:bg-cobalt-light transition-all shadow-[0_20px_40px_rgba(37,99,235,0.3)] flex items-center gap-2 active:scale-95 w-full sm:w-auto justify-center">
                 Start Project
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link to="/gallery" className="px-10 py-5 rounded-2xl glass font-bold text-lg hover:bg-white/10 transition-all border-white/5 active:scale-95">
+              <Link to="/gallery" className="px-6 sm:px-10 py-4 sm:py-5 rounded-2xl glass font-bold text-base sm:text-lg hover:bg-white/10 transition-all border-white/5 active:scale-95 w-full sm:w-auto text-center">
                 Project Gallery
               </Link>
             </motion.div>
@@ -166,7 +166,7 @@ export function LandingPage() {
             variants={containerVariants}
             className="text-center mb-24"
           >
-            <motion.h2 variants={itemVariants} className="text-5xl font-extrabold mb-6 tracking-tight">Core <span className="text-gradient">Capabilities.</span></motion.h2>
+            <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl font-extrabold mb-6 tracking-tight">Core <span className="text-gradient">Capabilities.</span></motion.h2>
             <motion.p variants={itemVariants} className="text-slate/50 max-w-2xl mx-auto text-lg">Standardized review systems designed for modern academic institutions.</motion.p>
           </motion.div>
 
@@ -210,7 +210,7 @@ export function LandingPage() {
               viewport={{ once: true }}
               className="max-w-2xl"
             >
-              <h2 className="text-5xl font-extrabold mb-6 tracking-tight">Unified <span className="text-gradient">Adaptability.</span></h2>
+              <h2 className="text-4xl sm:text-5xl font-extrabold mb-6 tracking-tight">Unified <span className="text-gradient">Adaptability.</span></h2>
               <p className="text-slate/50 text-lg leading-relaxed">Whether you're developing software or building physical prototypes, AcademiSync adapts to your department's specific needs.</p>
             </motion.div>
             <motion.div 
@@ -300,7 +300,7 @@ export function LandingPage() {
             viewport={{ once: true }}
             className="order-1 lg:order-2"
           >
-            <h2 className="text-6xl font-black mb-8 leading-[0.85] tracking-tighter italic">Rigorous <br /><span className="text-gradient">Quality.</span></h2>
+            <h2 className="text-5xl sm:text-6xl font-black mb-8 leading-[0.85] tracking-tighter italic">Rigorous <br /><span className="text-gradient">Quality.</span></h2>
             <p className="text-xl text-slate/60 mb-10 leading-relaxed font-medium">
               Our proprietary review system ensures every project passes through five distinct quality gates. 
               From conceptualization to final validation, experience the most rigorous review workflow in academia.
@@ -330,13 +330,13 @@ export function LandingPage() {
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-cobalt/10 rounded-full blur-[80px]" />
           <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-purple-500/5 rounded-full blur-[80px]" />
           
-          <h2 className="text-5xl font-black mb-8 tracking-tighter text-white">Ready to sync?</h2>
+          <h2 className="text-4xl sm:text-5xl font-black mb-8 tracking-tighter text-white">Ready to sync?</h2>
           <p className="text-lg text-slate/60 mb-12 max-w-lg mx-auto font-medium">Join hundreds of students and guides in the next evolution of academic project management.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <Link to="/register" className="px-12 py-5 rounded-2xl bg-cobalt text-white font-black text-xl hover:bg-cobalt-light transition-all shadow-2xl active:scale-95">
+            <Link to="/register" className="px-8 sm:px-12 py-4 sm:py-5 rounded-2xl bg-cobalt text-white font-black text-lg sm:text-xl hover:bg-cobalt-light transition-all shadow-2xl active:scale-95 w-full sm:w-auto text-center">
               Get Started Now
             </Link>
-            <Link to="/login" className="px-12 py-5 rounded-2xl glass text-white font-bold text-xl hover:bg-white/10 transition-all border-white/10 active:scale-95">
+            <Link to="/login" className="px-8 sm:px-12 py-4 sm:py-5 rounded-2xl glass text-white font-bold text-lg sm:text-xl hover:bg-white/10 transition-all border-white/10 active:scale-95 w-full sm:w-auto text-center">
               Sign In
             </Link>
           </div>

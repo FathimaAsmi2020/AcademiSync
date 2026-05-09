@@ -42,7 +42,7 @@ export function AdminPortal() {
     };
   }, []);
 
-  const fetchDashboardData = async () => {
+  async function fetchDashboardData() {
     setLoading(true);
     
     // Fetch Unassigned Student Profiles (Teams that just registered)
@@ -86,7 +86,7 @@ export function AdminPortal() {
     if (logsData) setAuditLogs(logsData);
 
     setLoading(false);
-  };
+  }
 
   const handleToggleMaintenance = () => {
     setMaintenanceMode(!maintenanceMode);
@@ -135,6 +135,21 @@ export function AdminPortal() {
       action: 'Project Created & Guide Assigned',
       details: { project_id: newProject.id, guide_id: guideId, student_profile_id: studentProfileId, email_dispatched: dispatchEmail }
     });
+    
+    // Send Real Email Notification via Edge Function
+    const guide = guides.find(g => g.id === guideId);
+    try {
+      await supabase.functions.invoke('send-email', {
+        body: { 
+          email: dispatchEmail, 
+          studentName: student.name, 
+          guideName: guide?.name || 'Assigned Faculty',
+          projectName: newProject.title
+        }
+      });
+    } catch (err) {
+      console.error("Failed to invoke send-email edge function:", err);
+    }
     
     setAssigningId(null);
   };
@@ -292,7 +307,7 @@ export function AdminPortal() {
                         <div className="flex items-center gap-3 w-full md:w-auto">
                           <select 
                             id={`select-${team.id}`}
-                            className="flex-1 md:w-48 bg-navy-dark border border-white/20 rounded-lg p-2.5 outline-none focus:border-cobalt-light text-sm text-black font-bold appearance-none"
+                            className="flex-1 md:w-48 bg-navy-dark border border-white/20 rounded-lg p-2.5 outline-none focus:border-cobalt-light text-sm text-white font-bold appearance-none"
                           >
                             <option value="">Select Guide...</option>
                             {guides.filter(g => 

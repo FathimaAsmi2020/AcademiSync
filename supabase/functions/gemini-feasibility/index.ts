@@ -1,4 +1,6 @@
+// @ts-expect-error: Deno URL imports are not supported by standard TS
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+// @ts-expect-error: npm imports are specific to Deno
 import { GoogleGenAI } from 'npm:@google/genai';
 
 const corsHeaders = {
@@ -6,7 +8,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-serve(async (req) => {
+serve(async (req: Request) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -23,6 +25,7 @@ serve(async (req) => {
     }
 
     // Securely retrieve the API key from Supabase Environment Variables
+    // @ts-expect-error: Deno global is not recognized by standard TS
     const apiKey = Deno.env.get('GEMINI_API_KEY');
     
     if (!apiKey) {
@@ -61,9 +64,9 @@ serve(async (req) => {
         status: 200,
       },
     )
-  } catch (error) {
+  } catch (error: any) {
     console.error("Edge function execution error:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error.message || 'Unknown error' }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 400,
     })

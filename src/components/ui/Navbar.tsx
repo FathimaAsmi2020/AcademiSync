@@ -24,7 +24,7 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
           <Link to="/gallery" className="hover:text-white transition-colors">Project Gallery</Link>
           <a href="#features" className="hover:text-white transition-colors">Features</a>
-          <a href="#gate" className="hover:text-white transition-colors text-nowrap">Academic Gate</a>
+          <Link to="/guidelines" className="hover:text-white transition-colors text-nowrap">Guidelines</Link>
         </div>
 
         <div className="flex items-center gap-4">
@@ -34,13 +34,13 @@ export function Navbar() {
             </Link>
           ) : (
             <>
-              <Link to="/login" className="flex items-center gap-2 text-slate/90 hover:text-white transition-colors px-4 py-2 font-medium">
+              <Link to="/login" className="flex items-center gap-2 text-slate/90 hover:text-white transition-colors px-2 sm:px-4 py-2 font-medium">
                 <LogIn size={18} />
-                Sign In
+                <span className="hidden sm:inline">Sign In</span>
               </Link>
-              <Link to="/register" className="flex items-center gap-2 px-6 py-2 rounded-lg bg-cobalt text-white font-medium hover:bg-cobalt-light transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)]">
-                <UserPlus size={18} />
-                Get Started
+              <Link to="/register" className="flex items-center gap-2 px-4 sm:px-6 py-2 rounded-lg bg-cobalt text-white font-medium hover:bg-cobalt-light transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+                <UserPlus size={18} className="sm:hidden" />
+                <span className="hidden sm:inline">Get Started</span>
               </Link>
             </>
           )}
